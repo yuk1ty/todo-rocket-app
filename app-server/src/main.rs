@@ -7,11 +7,11 @@ extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 
-pub mod endpoints;
-pub mod entity;
+pub mod application;
+pub mod domain;
 
 pub fn main() {
     rocket::ignite()
-        .mount("/", routes![endpoints::hc, endpoints::list, endpoints::new])
+        .mount("/", routes![application::endpoints::hc, application::endpoints::list, application::endpoints::new])
         .launch();
 }

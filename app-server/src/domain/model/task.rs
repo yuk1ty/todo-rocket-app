@@ -1,13 +1,13 @@
 #[derive(Serialize, Deserialize)]
 pub struct Task {
-    id: u64,
+    id: Option<u64>,
     name: String,
     due: String,
     done: bool,
 }
 
 impl Task {
-    pub fn new(id: u64, name: String, due: String, done: bool) -> Task {
+    pub fn new(id: Option<u64>, name: String, due: String, done: bool) -> Task {
         Task {
             id,
             name,

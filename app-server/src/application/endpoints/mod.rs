@@ -1,6 +1,7 @@
 extern crate rocket;
 
-use entity::task::*;
+//use entity::task::*;
+use domain::model::task::*;
 use rocket_contrib::Json;
 
 #[get("/hc")]
@@ -11,8 +12,8 @@ fn hc() -> &'static str {
 #[get("/tasks/list")]
 fn list() -> Json<Vec<Task>> {
     Json(vec![
-        Task::new(1, "taskname".to_string(), "20180501".to_string(), false),
-        Task::new(2, "tasknameB".to_string(), "20180501".to_string(), false),
+        Task::new(Some(1), "taskname".to_string(), "20180501".to_string(), false),
+        Task::new(Some(2), "tasknameB".to_string(), "20180501".to_string(), false),
     ])
 }
 
