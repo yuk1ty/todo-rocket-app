@@ -1,6 +1,5 @@
 extern crate rocket;
 
-//use entity::task::*;
 use domain::model::task::*;
 use rocket_contrib::Json;
 

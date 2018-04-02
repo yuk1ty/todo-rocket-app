@@ -13,6 +13,7 @@ use domain::model::task::*;
 
 pub mod application;
 pub mod domain;
+pub mod infra;
 
 pub fn main() {
     rocket::ignite()
@@ -21,7 +22,8 @@ pub fn main() {
             routes![
                 application::endpoints::hc,
                 application::endpoints::list,
-                application::endpoints::new
+                application::endpoints::new,
+                application::endpoints::update
             ],
         )
         .manage(Mutex::new(HashMap::<u64, Task>::new()))
