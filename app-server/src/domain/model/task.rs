@@ -1,9 +1,9 @@
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Task {
-    id: Option<u64>,
-    name: String,
-    due: String,
-    done: bool,
+    pub id: Option<u64>,
+    pub name: String,
+    pub due: String,
+    pub done: bool,
 }
 
 impl Task {
