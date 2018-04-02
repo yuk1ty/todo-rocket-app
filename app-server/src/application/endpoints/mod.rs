@@ -2,12 +2,13 @@ extern crate rocket;
 
 use domain::model::task::*;
 use rocket_contrib::Json;
-
 use rocket::State;
 use std::collections::HashMap;
 use std::sync::Mutex;
+use infra::util::*;
 
 type TaskRepository = Mutex<HashMap<u64, Task>>;
+type IdGenerator = Mutex<Id>;
 
 #[get("/hc")]
 fn hc() -> &'static str {
@@ -24,12 +25,13 @@ fn list(repository: State<TaskRepository>) -> Json<Vec<Task>> {
 }
 
 #[post("/tasks/new", format = "application/json", data = "<task>")]
-fn new(task: Json<Task>, _repository: State<TaskRepository>) -> Json<TaskResponse> {
+fn new(task: Json<Task>, _repository: State<TaskRepository>, gen: State<IdGenerator>) -> Json<TaskResponse> {
     let mut mut_repository = _repository.lock().expect("Repository is locked.");
     let copied_task: Task = task.into_inner().clone();
+    let id = gen.lock().expect("Id generator is locked").incr();
 
-    // TODO ID generation
-    mut_repository.insert(1, copied_task.clone());
+    mut_repository.insert(id.unwrap(), copied_task.clone());
+
     Json(TaskResponse::new("OK".to_string(), None, Some(copied_task)))
 }
 

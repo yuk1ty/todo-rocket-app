@@ -10,6 +10,7 @@ extern crate serde_derive;
 use std::sync::Mutex;
 use std::collections::HashMap;
 use domain::model::task::*;
+use infra::util::Id;
 
 pub mod application;
 pub mod domain;
@@ -27,5 +28,6 @@ pub fn main() {
             ],
         )
         .manage(Mutex::new(HashMap::<u64, Task>::new()))
+        .manage(Mutex::new(Id::new()))
         .launch();
 }
