@@ -1,5 +1,5 @@
 use super::err::*;
-use super::super::super::domain::model::task::*;
+use ::domain::model::task::*;
 use std::sync::Mutex;
 use std::collections::HashMap;
 
