@@ -1,10 +1,9 @@
 use super::err::*;
-use ::domain::model::task::*;
+use domain::model::task::*;
 use std::sync::Mutex;
 use std::collections::HashMap;
 
 pub trait Repository<T> {
-
     fn into_list() -> Vec<T>;
 
     fn store(v: T) -> T;
@@ -13,5 +12,5 @@ pub trait Repository<T> {
 }
 
 pub struct TaskRepository {
-    repository: Mutex<HashMap<u64, Task>>
+    repository: Mutex<HashMap<u64, Task>>,
 }

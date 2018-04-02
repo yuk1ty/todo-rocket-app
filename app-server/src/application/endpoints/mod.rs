@@ -25,7 +25,11 @@ fn list(repository: State<TaskRepository>) -> Json<Vec<Task>> {
 }
 
 #[post("/tasks/new", format = "application/json", data = "<task>")]
-fn new(task: Json<Task>, _repository: State<TaskRepository>, gen: State<IdGenerator>) -> Json<TaskResponse> {
+fn new(
+    task: Json<Task>,
+    _repository: State<TaskRepository>,
+    gen: State<IdGenerator>,
+) -> Json<TaskResponse> {
     let mut mut_repository = _repository.lock().expect("Repository is locked.");
     let copied_task: Task = task.into_inner().clone();
     let id = gen.lock().expect("Id generator is locked").incr();

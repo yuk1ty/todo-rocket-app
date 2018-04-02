@@ -21,7 +21,7 @@ impl Task {
 pub struct TaskResponse {
     status: String,
     reason: Option<String>,
-    task: Option<Task>
+    task: Option<Task>,
 }
 
 impl TaskResponse {
@@ -29,7 +29,7 @@ impl TaskResponse {
         TaskResponse {
             status,
             reason,
-            task
+            task,
         }
     }
 }

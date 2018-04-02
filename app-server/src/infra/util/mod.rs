@@ -3,7 +3,6 @@ pub struct Id {
 }
 
 impl Id {
-
     pub fn new() -> Id {
         Id { id: 0 }
     }
