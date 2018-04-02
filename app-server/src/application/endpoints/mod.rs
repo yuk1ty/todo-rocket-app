@@ -17,20 +17,11 @@ fn hc() -> &'static str {
 
 #[get("/tasks/list")]
 fn list(repository: State<TaskRepository>) -> Json<Vec<Task>> {
-    Json(vec![
-        Task::new(
-            Some(1),
-            "taskname".to_string(),
-            "20180501".to_string(),
-            false,
-        ),
-        Task::new(
-            Some(2),
-            "tasknameB".to_string(),
-            "20180501".to_string(),
-            false,
-        ),
-    ])
+    let mut list = Vec::<Task>::new();
+    for (_, task) in repository.lock().unwrap().iter() {
+        list.push(task.clone());
+    }
+    Json(list)
 }
 
 #[post("/tasks/new", format = "application/json", data = "<task>")]
