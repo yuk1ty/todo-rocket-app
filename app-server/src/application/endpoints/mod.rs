@@ -31,12 +31,20 @@ fn new(
     gen: State<IdGenerator>,
 ) -> Json<TaskResponse> {
     let mut mut_repository = _repository.lock().expect("Repository is locked.");
+
+    let id;
+    {
+        let mut generator = gen.lock().expect("Id generator is locked.");
+        generator.incr();
+        id = generator.unwrap();
+    }
+
     let copied_task: Task = task.into_inner().clone();
-    let id = gen.lock().expect("Id generator is locked").incr();
+    let save_task = Task::new(Some(id), copied_task.name, copied_task.due, copied_task.done);
 
-    mut_repository.insert(id.unwrap(), copied_task.clone());
+    mut_repository.insert(id, save_task.clone());
 
-    Json(TaskResponse::new("OK".to_string(), None, Some(copied_task)))
+    Json(TaskResponse::new("200".to_string(), None, Some(save_task)))
 }
 
 #[put("/tasks/update", format = "application/json", data = "<task>")]
@@ -47,8 +55,9 @@ fn update(task: Json<Task>, _repository: State<TaskRepository>) -> Json<TaskResp
 
     match maybe_task_id {
         Some(task_id) => if mut_repository.contains_key(&task_id) {
-            mut_repository.insert(task_id, copied_task.clone());
-            Json(TaskResponse::new("OK".to_string(), None, Some(copied_task)))
+            let update_task = Task::new(Some(task_id), copied_task.name, copied_task.due, copied_task.done);
+            mut_repository.insert(task_id, update_task.clone());
+            Json(TaskResponse::new("OK".to_string(), None, Some(update_task)))
         } else {
             Json(TaskResponse::new(
                 "503".to_string(),

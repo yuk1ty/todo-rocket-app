@@ -1,18 +1,22 @@
+use std::cell::Cell;
+use std::borrow::BorrowMut;
+
+#[derive(Clone)]
 pub struct Id {
-    id: u64,
+    id: Cell<u64>,
 }
 
 impl Id {
     pub fn new() -> Id {
-        Id { id: 0 }
+        Id { id: Cell::new(0) }
     }
 
-    pub fn incr(&self) -> Id {
-        let new_id = self.id + 1;
-        Id { id: new_id }
+    pub fn incr(&mut self) {
+        let new_id = self.clone().id.into_inner() + 1;
+        self.id.borrow_mut().set(new_id);
     }
 
     pub fn unwrap(&self) -> u64 {
-        self.id
+        self.clone().id.into_inner()
     }
 }
