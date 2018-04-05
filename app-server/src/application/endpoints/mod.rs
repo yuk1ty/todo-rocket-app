@@ -40,7 +40,12 @@ fn new(
     }
 
     let copied_task: Task = task.into_inner();
-    let save_task = Task::new(Some(id), copied_task.name, copied_task.due, copied_task.done);
+    let save_task = Task::new(
+        Some(id),
+        copied_task.name,
+        copied_task.due,
+        copied_task.done,
+    );
 
     mut_repository.insert(id, save_task.clone());
 
@@ -55,7 +60,12 @@ fn update(task: Json<Task>, _repository: State<TaskRepository>) -> Json<TaskResp
 
     match maybe_task_id {
         Some(task_id) => if mut_repository.contains_key(&task_id) {
-            let update_task = Task::new(Some(task_id), copied_task.name, copied_task.due, copied_task.done);
+            let update_task = Task::new(
+                Some(task_id),
+                copied_task.name,
+                copied_task.due,
+                copied_task.done,
+            );
             mut_repository.insert(task_id, update_task.clone());
             Json(TaskResponse::new("OK".to_string(), None, Some(update_task)))
         } else {
