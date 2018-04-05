@@ -39,7 +39,7 @@ fn new(
         id = generator.unwrap();
     }
 
-    let copied_task: Task = task.into_inner().clone();
+    let copied_task: Task = task.into_inner();
     let save_task = Task::new(Some(id), copied_task.name, copied_task.due, copied_task.done);
 
     mut_repository.insert(id, save_task.clone());
@@ -50,7 +50,7 @@ fn new(
 #[put("/tasks/update", format = "application/json", data = "<task>")]
 fn update(task: Json<Task>, _repository: State<TaskRepository>) -> Json<TaskResponse> {
     let mut mut_repository = _repository.lock().expect("Repository is locked.");
-    let copied_task: Task = task.into_inner().clone();
+    let copied_task: Task = task.into_inner();
     let maybe_task_id: Option<u64> = copied_task.id;
 
     match maybe_task_id {
