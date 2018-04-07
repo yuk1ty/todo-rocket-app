@@ -32,7 +32,7 @@ impl<'r> Responder<'r> for Task {
         Response::build()
             .raw_header("Content-Type", "application/json")
             .raw_header("Access-Control-Allow-Origin", "*")
-            .raw_header("Access-Control-Allow-Methods", "GET,POST,PUT,HEAD,OPTIONS")
+            .raw_header("Access-Control-Allow-Methods", "GET,POST,PATCH,HEAD,OPTIONS")
             .raw_header("Access-Control-Allow-Headers", "Content-Type")
             .raw_header("Access-Control-Allow-Credentials", "true")
             .sized_body(Cursor::new(format!(
@@ -59,7 +59,7 @@ impl<'r> Responder<'r> for TaskList {
         Response::build()
             .raw_header("Content-Type", "application/json")
             .raw_header("Access-Control-Allow-Origin", "*")
-            .raw_header("Access-Control-Allow-Methods", "GET,POST,PUT,HEAD,OPTIONS")
+            .raw_header("Access-Control-Allow-Methods", "GET,POST,PATCH,HEAD,OPTIONS")
             .raw_header("Access-Control-Allow-Headers", "Content-Type")
             .raw_header("Access-Control-Allow-Credentials", "true")
             .sized_body(Cursor::new(format!(
