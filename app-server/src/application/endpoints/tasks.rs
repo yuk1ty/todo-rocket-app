@@ -60,7 +60,10 @@ fn update(task: Json<Task>, _repository: State<TaskRepository>) -> Result<Task, 
 
             let saved = mut_repository
                 .insert(task_id, update_task.clone())
-                .expect(&format!("Can't insert task: task_id #{}", update_task.id.unwrap()));
+                .expect(&format!(
+                    "Can't insert task: task_id #{}",
+                    update_task.id.unwrap()
+                ));
             Ok(saved)
         } else {
             Err(NotFound(format!("Task Not Found: {}", &copied_task.name)))

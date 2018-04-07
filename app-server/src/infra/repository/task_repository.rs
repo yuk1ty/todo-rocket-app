@@ -39,7 +39,7 @@ impl Repository<Task> for TaskRepository {
             let saved = repository.insert(update_task.id.unwrap(), update_task);
             match saved {
                 Some(task) => Ok(task),
-                None => Err(RepositoryErr::new("Can't update task".to_string()))
+                None => Err(RepositoryErr::new("Can't update task".to_string())),
             }
         } else {
             Err(RepositoryErr::new("Not Found Task".to_string()))

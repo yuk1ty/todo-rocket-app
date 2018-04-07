@@ -6,4 +6,3 @@ pub mod tasks;
 fn hc() -> &'static str {
     "OK"
 }
-
