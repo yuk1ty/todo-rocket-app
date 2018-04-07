@@ -1,3 +1,9 @@
+use std::io::Cursor;
+
+use rocket::request::Request;
+use rocket::response::{self, Responder, Response};
+use serde_json;
+
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Task {
     pub id: Option<u64>,
@@ -15,21 +21,21 @@ impl Task {
             done,
         }
     }
+
+    pub fn copy(id: Option<u64>, source: Task) -> Task {
+        Task::new(id, source.name, source.due, source.done)
+    }
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct TaskResponse {
-    status: String,
-    reason: Option<String>,
-    task: Option<Task>,
-}
-
-impl TaskResponse {
-    pub fn new(status: String, reason: Option<String>, task: Option<Task>) -> TaskResponse {
-        TaskResponse {
-            status,
-            reason,
-            task,
-        }
+impl<'r> Responder<'r> for Task {
+    fn respond_to(self, _: &Request) -> response::Result<'r> {
+        Response::build()
+            .raw_header("Content-Type", "application/json")
+            .raw_header("Access-Control-Allow-Origin", "*")
+            .raw_header("Access-Control-Allow-Methods", "GET,POST,PUT,HEAD,OPTIONS")
+            .raw_header("Access-Control-Allow-Headers", "Content-Type")
+            .raw_header("Access-Control-Allow-Credentials", "true")
+            .sized_body(Cursor::new(format!("{}", serde_json::to_string(&self).unwrap())))
+            .ok()
     }
 }

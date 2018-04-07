@@ -12,7 +12,7 @@
           <el-input placeholder="YYYY-MM-DD" v-model="due"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">Submit</el-button>
+          <el-button type="primary" @click="submitTask()">Submit</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -20,11 +20,35 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
       description: '',
       due: '',
+    }
+  },
+  methods: {
+    submitTask: function() {
+      const self = this
+      let task = {
+        name: self.description,
+        due: self.due,
+        done: false
+      }
+
+      axios.post(`http://localhost:8000/tasks/new`, task, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then(response => {
+        console.log("Response")
+        console.log(response)
+      }).catch(err => {
+        console.log("Error")
+        console.error(err)
+      })
     }
   }
 }
