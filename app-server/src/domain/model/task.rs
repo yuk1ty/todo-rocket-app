@@ -35,7 +35,37 @@ impl<'r> Responder<'r> for Task {
             .raw_header("Access-Control-Allow-Methods", "GET,POST,PUT,HEAD,OPTIONS")
             .raw_header("Access-Control-Allow-Headers", "Content-Type")
             .raw_header("Access-Control-Allow-Credentials", "true")
-            .sized_body(Cursor::new(format!("{}", serde_json::to_string(&self).unwrap())))
+            .sized_body(Cursor::new(format!(
+                "{}",
+                serde_json::to_string(&self).unwrap()
+            )))
+            .ok()
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct TaskList {
+    pub tasks: Vec<Task>,
+}
+
+impl TaskList {
+    pub fn new(tasks: Vec<Task>) -> TaskList {
+        TaskList { tasks }
+    }
+}
+
+impl<'r> Responder<'r> for TaskList {
+    fn respond_to(self, _: &Request) -> response::Result<'r> {
+        Response::build()
+            .raw_header("Content-Type", "application/json")
+            .raw_header("Access-Control-Allow-Origin", "*")
+            .raw_header("Access-Control-Allow-Methods", "GET,POST,PUT,HEAD,OPTIONS")
+            .raw_header("Access-Control-Allow-Headers", "Content-Type")
+            .raw_header("Access-Control-Allow-Credentials", "true")
+            .sized_body(Cursor::new(format!(
+                "{}",
+                serde_json::to_string(&self.tasks).unwrap()
+            )))
             .ok()
     }
 }

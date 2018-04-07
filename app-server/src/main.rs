@@ -25,7 +25,7 @@ pub fn main() {
                 application::endpoints::preflight_tasks_update,
                 application::endpoints::list,
                 application::endpoints::new,
-                application::endpoints::update
+                application::endpoints::update,
             ],
         )
         .manage(Mutex::new(HashMap::<u64, Task>::new()))
