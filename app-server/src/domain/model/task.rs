@@ -64,7 +64,7 @@ impl<'r> Responder<'r> for TaskList {
             .raw_header("Access-Control-Allow-Origin", "*")
             .raw_header(
                 "Access-Control-Allow-Methods",
-                "GET,POST,PATCH,HEAD,OPTIONS",
+                "GET",
             )
             .raw_header("Access-Control-Allow-Headers", "Content-Type")
             .raw_header("Access-Control-Allow-Credentials", "true")
