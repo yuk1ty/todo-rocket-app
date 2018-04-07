@@ -3,7 +3,7 @@ pub struct RepositoryErr {
 }
 
 impl RepositoryErr {
-    fn new(message: String) -> RepositoryErr {
+    pub fn new(message: String) -> RepositoryErr {
         RepositoryErr { message }
     }
 }

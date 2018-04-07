@@ -17,19 +17,17 @@ pub mod infra;
 
 pub fn main() {
     rocket::ignite()
+        .mount("/", routes![application::endpoints::hc,])
         .mount(
-            "/",
+            "/tasks",
             routes![
-                application::endpoints::hc,
-            ],
-        )
-        .mount("/tasks", routes![
                 application::endpoints::tasks::preflight_tasks_new,
                 application::endpoints::tasks::preflight_tasks_update,
                 application::endpoints::tasks::list,
                 application::endpoints::tasks::new,
                 application::endpoints::tasks::update,
-        ])
+            ],
+        )
         .manage(Mutex::new(HashMap::<u64, Task>::new()))
         .manage(Mutex::new(Id::new()))
         .launch();
