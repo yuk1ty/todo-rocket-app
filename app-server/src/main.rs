@@ -21,13 +21,15 @@ pub fn main() {
             "/",
             routes![
                 application::endpoints::hc,
-                application::endpoints::preflight_tasks_new,
-                application::endpoints::preflight_tasks_update,
-                application::endpoints::list,
-                application::endpoints::new,
-                application::endpoints::update,
             ],
         )
+        .mount("/tasks", routes![
+                application::endpoints::tasks::preflight_tasks_new,
+                application::endpoints::tasks::preflight_tasks_update,
+                application::endpoints::tasks::list,
+                application::endpoints::tasks::new,
+                application::endpoints::tasks::update,
+        ])
         .manage(Mutex::new(HashMap::<u64, Task>::new()))
         .manage(Mutex::new(Id::new()))
         .launch();
