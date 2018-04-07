@@ -19,7 +19,7 @@
       <!--task list-->
       <ul>
         <li v-for="task in tasks">
-          <el-checkbox v-model="task.done">{{ task.name }} : {{ task.due }}</el-checkbox>
+          <el-checkbox v-model="task.done" v-on:change="changeStatus(task)">{{ task.name }} : {{ task.due }}</el-checkbox>
         </li>
       </ul>
 
@@ -73,6 +73,16 @@ export default {
     _clearForm: function() {
       this.name = ''
       this.due = ''
+    },
+    changeStatus: function(task) {
+      const self = this
+      axios.patch(`http://localhost:8000/tasks/update`, task, {
+        headers: {
+          'Content-Type':'application/json',
+        }
+      }).catch(err => {
+        self.errorDialogVisible = true
+      })
     }
   },
   created: function() {
