@@ -1,7 +1,6 @@
 use super::err::*;
 use domain::model::task::*;
 use std::collections::HashMap;
-use std::rc::Rc;
 use std::cell::RefCell;
 
 pub trait Repository<T> {
@@ -13,7 +12,15 @@ pub trait Repository<T> {
 }
 
 pub struct TaskRepository {
-    repository: Rc<RefCell<HashMap<u64, Task>>>,
+    repository: RefCell<HashMap<u64, Task>>,
+}
+
+impl TaskRepository {
+    pub fn new(map: HashMap<u64, Task>) -> TaskRepository {
+        TaskRepository {
+            repository: RefCell::new(map),
+        }
+    }
 }
 
 impl Repository<Task> for TaskRepository {

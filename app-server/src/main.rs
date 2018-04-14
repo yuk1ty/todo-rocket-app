@@ -10,6 +10,7 @@ use std::sync::Mutex;
 use std::collections::HashMap;
 use domain::model::task::*;
 use infra::util::Id;
+use application::endpoints::*;
 
 pub mod application;
 pub mod domain;
@@ -17,15 +18,15 @@ pub mod infra;
 
 pub fn main() {
     rocket::ignite()
-        .mount("/", routes![application::endpoints::hc,])
+        .mount("/", routes![hc])
         .mount(
             "/tasks",
             routes![
-                application::endpoints::tasks::preflight_tasks_new,
-                application::endpoints::tasks::preflight_tasks_update,
-                application::endpoints::tasks::list,
-                application::endpoints::tasks::new,
-                application::endpoints::tasks::update,
+                tasks::preflight_tasks_new,
+                tasks::preflight_tasks_update,
+                tasks::list,
+                tasks::new,
+                tasks::update,
             ],
         )
         .manage(Mutex::new(HashMap::<u64, Task>::new()))

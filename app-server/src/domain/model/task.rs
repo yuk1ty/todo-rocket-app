@@ -1,4 +1,5 @@
 use std::io::Cursor;
+use std::mem;
 
 use rocket::request::Request;
 use rocket::response::{self, Responder, Response};
@@ -23,7 +24,7 @@ impl Task {
     }
 
     pub fn copy(id: Option<u64>, source: Task) -> Task {
-        Task::new(id, source.name, source.due, source.done)
+        Task { id, ..source }
     }
 }
 
@@ -62,10 +63,7 @@ impl<'r> Responder<'r> for TaskList {
         Response::build()
             .raw_header("Content-Type", "application/json")
             .raw_header("Access-Control-Allow-Origin", "*")
-            .raw_header(
-                "Access-Control-Allow-Methods",
-                "GET",
-            )
+            .raw_header("Access-Control-Allow-Methods", "GET")
             .raw_header("Access-Control-Allow-Headers", "Content-Type")
             .raw_header("Access-Control-Allow-Credentials", "true")
             .sized_body(Cursor::new(format!(
